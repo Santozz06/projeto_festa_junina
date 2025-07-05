@@ -1,3 +1,39 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="arraia">Arraiá do IF</string>
+    <string name="atracoes">Atrações</string>
+    <string name="cardapio">Cardápio</string>
+    <string name="comprar">Comprar fichas</string>
+    <string-array name="atracoes_array">
+        <item>Quadrilha</item>
+        <item>Bingo</item>
+        <item>Pescaria</item>
+        <item>Correio Elegante</item>
+        <item>Barraca do Beijo</item>
+        <item>Boca do Palhaço</item>
+        <item>Jogo das Argolas</item>
+        <item>Corrida de Saco</item>
+    </string-array>
+    <string-array name="pagamento_array">
+        <item>Cartão de Crédito</item>
+        <item>Cartão de Débito</item>
+        <item>Pix</item>
+        <item>Dinheiro</item>
+    </string-array>
+    <string name="itensca">Itens do carrinho:</string>
+    <string name="nome">Seu nome:</string>
+    <string name="digite">Digite seu nome</string>
+    <string name="confirmar">Confirmar compra</string>
+    <string name="atracoesfes">Atrações da Festa</string>
+    <string name="brincadeiras">Quadrilha\nBingo R$5.00\nPescaria R$3.00\nCorreio Elegante R$2.00\nBarraca do Beijo R$2.00\nBoca do Palhaço R$3.00\nJogo das Argolas R$3.00\nCorrida de Saco R$2.00:</string>
+    <string name="cardapiofes">Cardápio da Festa</string>
+    <string name="comidas">Água R$3.00\nRefrigerante R$5.00\nQuentão R$4.00\nPastel R$5.00\nEnroladinho R$3.00\nPaçoca R$1.50\nRapadura R$2.00\nBolo de milho R$3.50\nBatata Frita R$7.00\nCachorro Quente R$5.00</string>
+    <string name="selecionado">Produto Selecionado:</string>
+    <string name="fichas">Quantidade de Fichas:</string>
+    <string name="quantidade">Digite a quantidade</string>
+    <string name="adicionar">Adicionar ao Carrinho</string>
+    <string name="ver">Ver Carrinho</string>
+    <string name="pagamento">Forma de pagamento: </string>
+
+
 </resources>

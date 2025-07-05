@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fichas">
+
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_fundo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!-- Botão de seta voltar -->
+    <LinearLayout
+        android:id="@+id/layoutConteudo"
+        android:layout_width="401dp"
+        android:layout_height="600dp"
+        android:layout_marginHorizontal="24dp"
+        android:background="@android:color/transparent"
+        android:maxWidth="700dp"
+        android:orientation="vertical"
+        android:padding="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.114">
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="290dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_titulo"
+            android:fontFamily="cursive"
+            android:gravity="center"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="12dp"
+            android:text="@string/comprar"
+            android:textColor="@android:color/white"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <!-- Produto Selecionado -->
+
+        <TextView
+            android:id="@+id/textProduto"
+            android:layout_width="266dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            android:gravity="center"
+
+            android:text="@string/selecionado"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <!-- Quantidade -->
+
+        <Spinner
+            android:id="@+id/spinnerAtracoes"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
+            android:entries="@array/atracoes_array"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background"
+            android:popupBackground="@android:color/white" />
+
+        <TextView
+            android:id="@+id/textQuantidade"
+            android:layout_width="265dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="@string/fichas"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editQuantidade"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background"
+            android:hint="@string/quantidade"
+            android:inputType="number"
+            android:paddingHorizontal="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#55000000" />
+
+        <!-- Botões -->
+        <Button
+            android:id="@+id/btnAdicionar"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#228B22"
+            android:text="Adicionar ao Carrinho"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnVerCarrinho"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#228B22"
+            android:onClick="ircarrinho"
+            android:text="@string/ver"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnSetaFinal"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="Seta"
+        android:onClick="irtelaprincipall"
+        android:scaleType="fitCenter"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintTop_toBottomOf="@id/layoutConteudo"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
