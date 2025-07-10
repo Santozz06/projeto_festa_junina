@@ -138,6 +138,20 @@
                 android:entries="@array/pagamento_array"
                 android:popupBackground="@android:color/white" />
 
+            <!-- Adicionar um total -->
+            <TextView
+                android:id="@+id/textTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:text="Total: R$ 0,00"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
             <Button
                 android:id="@+id/btnVerCarrinho"
                 android:layout_width="317dp"
