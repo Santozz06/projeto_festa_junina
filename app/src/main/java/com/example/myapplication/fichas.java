@@ -35,15 +35,12 @@ public class fichas extends AppCompatActivity {
             return insets;
         });
 
-        // Inicializar componentes
         spinnerProdutos = findViewById(R.id.spinnerAtracoes);
         editQuantidade = findViewById(R.id.editQuantidade);
         btnAdicionar = findViewById(R.id.btnAdicionar);
 
-        // Configurar o spinner com os produtos
         configurarSpinnerProdutos();
 
-        // Configurar o botão de adicionar ao carrinho
         btnAdicionar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,16 +50,21 @@ public class fichas extends AppCompatActivity {
     }
 
     private void configurarSpinnerProdutos() {
-        // Criar lista de produtos (conforme documentação)
+        // Criar lista de produtos
         ArrayList<String> produtos = new ArrayList<>();
         produtos.add("Pé de moleque - R$5.00");
         produtos.add("Pipoca - R$3.00");
         produtos.add("Cachorro-quente - R$5.00");
         produtos.add("Refrigerante - R$5.00");
         produtos.add("Quentão - R$4.00");
-        // Adicione outros produtos conforme a documentação
+        produtos.add("Bingo - R$5.00");
+        produtos.add("Pescaria - R$3.00");
+        produtos.add("Correio elegante - R$2.00");
+        produtos.add("Barraca do beijo - R$2.00");
+        produtos.add("Boca do palhaço - R$3.00");
+        produtos.add("Jogo das Argolas - R$3.00");
+        produtos.add("Corrida do saco - R$2.00");
 
-        // Configurar o adapter para o spinner
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -74,7 +76,6 @@ public class fichas extends AppCompatActivity {
 
     private void adicionarAoCarrinho() {
         try {
-            // Validar quantidade
             String quantidadeStr = editQuantidade.getText().toString();
             if (quantidadeStr.isEmpty()) {
                 Toast.makeText(this, "Informe a quantidade", Toast.LENGTH_SHORT).show();
@@ -86,23 +87,16 @@ public class fichas extends AppCompatActivity {
                 Toast.makeText(this, "Quantidade inválida", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            // Obter produto selecionado
             String produtoSelecionado = spinnerProdutos.getSelectedItem().toString();
 
-            // Extrair nome e preço do produto
             String[] partes = produtoSelecionado.split(" - R\\$");
             String nomeProduto = partes[0];
             double preco = Double.parseDouble(partes[1]);
-
-            // Criar objeto Produto e adicionar ao carrinho
             Produto produto = new Produto(nomeProduto, preco, quantidade);
             carrinho.add(produto);
 
             // Feedback para o usuário
             Toast.makeText(this, "Produto adicionado ao carrinho!", Toast.LENGTH_SHORT).show();
-
-            // Limpar campo de quantidade
             editQuantidade.setText("");
 
         } catch (NumberFormatException e) {
@@ -118,7 +112,6 @@ public class fichas extends AppCompatActivity {
     }
 
     public void ircarrinho(View view) {
-        // Passar o carrinho para a activity do carrinho
         Intent i = new Intent(fichas.this, carrinho.class);
         i.putExtra("carrinho", carrinho);
         startActivity(i);

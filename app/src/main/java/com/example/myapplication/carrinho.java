@@ -2,136 +2,96 @@ package com.example.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import java.text.NumberFormat;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class carrinho extends AppCompatActivity {
 
     private RecyclerView rvCarrinho;
-    private LinearLayout emptyCartView;
+    private CarrinhoAdapter adapter;
+    private TextView textTotal;
     private EditText editNome;
     private Spinner spinnerPagamento;
     private Button btnConfirmar;
-    private TextView textTotal;
-    private ArrayList<Produto> itensCarrinho;
-    private CarrinhoAdapter carrinhoAdapter;
-    private double total = 0.0;
+    private ArrayList<Produto> carrinho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carrinho);
 
-        // Inicializar componentes
         rvCarrinho = findViewById(R.id.rvCarrinho);
-        emptyCartView = findViewById(R.id.emptyCartView);
-        editNome = findViewById(R.id.editQuantidade); // Observação: Este ID parece errado, deveria ser editNome
-        spinnerPagamento = findViewById(R.id.spinnerAtracoes); // Observação: ID estranho para pagamento
-        btnConfirmar = findViewById(R.id.btnVerCarrinho); // Observação: ID não corresponde à função
         textTotal = findViewById(R.id.textTotal);
+        editNome = findViewById(R.id.editQuantidade);
+        spinnerPagamento = findViewById(R.id.spinnerAtracoes);
+        btnConfirmar = findViewById(R.id.btnVerCarrinho);
+        carrinho = (ArrayList<Produto>) getIntent().getSerializableExtra("carrinho");
 
-        // Receber itens do carrinho
-        itensCarrinho = (ArrayList<Produto>) getIntent().getSerializableExtra("carrinho");
-        if(itensCarrinho == null) {
-            itensCarrinho = new ArrayList<>();
-        }
-
-        // Configurar RecyclerView
-        rvCarrinho.setLayoutManager(new LinearLayoutManager(this));
-        carrinhoAdapter = new CarrinhoAdapter(itensCarrinho, position -> {
-            // Remover item quando clicado
-            itensCarrinho.remove(position);
-            carrinhoAdapter.notifyItemRemoved(position);
-            atualizarVisualizacaoCarrinho();
-        });
-        rvCarrinho.setAdapter(carrinhoAdapter);
-
-        // Configurar spinner de pagamento
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.pagamento_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPagamento.setAdapter(adapter);
-
-        // Configurar botão de confirmar
-        btnConfirmar.setOnClickListener(v -> confirmarCompra());
-
-        // Atualizar visualização inicial
-        atualizarVisualizacaoCarrinho();
-    }
-
-    private void atualizarVisualizacaoCarrinho() {
-        if (itensCarrinho.isEmpty()) {
+        // Se vazio, mostrar view de vazio
+        if (carrinho == null || carrinho.isEmpty()) {
             rvCarrinho.setVisibility(View.GONE);
-            emptyCartView.setVisibility(View.VISIBLE);
-            TextView emptyText = new TextView(this);
-            emptyText.setText("Seu carrinho está vazio");
-            emptyText.setTextSize(18);
-            emptyText.setTextColor(getResources().getColor(android.R.color.black));
-            emptyCartView.addView(emptyText);
+            findViewById(R.id.emptyCartView).setVisibility(View.VISIBLE);
         } else {
             rvCarrinho.setVisibility(View.VISIBLE);
-            emptyCartView.setVisibility(View.GONE);
-            calcularTotal();
+            findViewById(R.id.emptyCartView).setVisibility(View.GONE);
+            adapter = new CarrinhoAdapter(carrinho, this::atualizarTotal);
+            rvCarrinho.setLayoutManager(new LinearLayoutManager(this));
+            rvCarrinho.setAdapter(adapter);
+            atualizarTotal();
+        }
+
+        btnConfirmar.setOnClickListener(v -> confirmarCompra());
+    }
+
+    private void atualizarTotal() {
+        double total = 0;
+        for (Produto p : carrinho) {
+            total += p.getSubtotal();
+        }
+        textTotal.setText(String.format(Locale.getDefault(), "Total: R$ %.2f", total));
+
+        if (carrinho.isEmpty()) {
+            rvCarrinho.setVisibility(View.GONE);
+            findViewById(R.id.emptyCartView).setVisibility(View.VISIBLE);
         }
     }
 
-    private void calcularTotal() {
-        total = 0.0;
-        for (Produto produto : itensCarrinho) {
-            total += produto.getPreco() * produto.getQuantidade();
-        }
-        textTotal.setText(String.format("Total: %s", formatarMoeda(total)));
-    }
-
-    private String formatarMoeda(double valor) {
-        return NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(valor);
-    }
 
     private void confirmarCompra() {
+        if (carrinho == null || carrinho.isEmpty()) {
+            Toast.makeText(this, "Adicione itens ao carrinho antes de reservar", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String nome = editNome.getText().toString().trim();
-
-        if (nome.isEmpty() || nome.length() < 3) {
-            editNome.setError("Nome deve ter pelo menos 3 caracteres");
+        if (TextUtils.isEmpty(nome)) {
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!nome.matches("^[a-zA-ZÀ-ÿ\\s]{3,100}$")) {
+            Toast.makeText(this, "Verifique se preencheu corretamente seu nome", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (itensCarrinho.isEmpty()) {
-            Toast.makeText(this, "Adicione itens ao carrinho primeiro", Toast.LENGTH_SHORT).show();
+        String pagamento = spinnerPagamento.getSelectedItem().toString();
+        if (pagamento.isEmpty()) {
+            Toast.makeText(this, "Selecione uma forma de pagamento", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String formaPagamento = spinnerPagamento.getSelectedItem().toString();
-
-        // Criar reserva
-        Reserva reserva = new Reserva();
-        reserva.setNomeCliente(nome);
-        reserva.setFormaPagamento(formaPagamento);
-        reserva.setListaProdutos(itensCarrinho);
-        reserva.setTotal(total);
-
-        // Simular confirmação
-        Toast.makeText(this, "Pedido confirmado! Obrigado!", Toast.LENGTH_LONG).show();
-
-        // Voltar para tela principal
-        irtelaprincipalll(null);
+        Toast.makeText(this, "Pedido Reservado!", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void irtelaprincipalll(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
         finish();
     }
 }

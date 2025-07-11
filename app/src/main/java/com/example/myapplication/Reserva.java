@@ -9,12 +9,10 @@ public class Reserva implements Serializable {
     private ArrayList<Produto> listaProdutos;
     private double total;
 
-    // Construtor
     public Reserva() {
         this.listaProdutos = new ArrayList<>();
     }
-
-    // Getters e Setters
+    
     public String getNomeCliente() {
         return nomeCliente;
     }

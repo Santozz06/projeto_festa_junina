@@ -5,65 +5,61 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.CarrinhoViewHolder> {
+public class CarrinhoAdapter extends RecyclerView.Adapter<CarrinhoAdapter.ViewHolder> {
 
-    private ArrayList<Produto> itens;
-    private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(int position);
+    private final ArrayList<Produto> lista;
+    private final OnItemRemovidoListener listener;
+    public interface OnItemRemovidoListener {
+        void onItemRemovido();
     }
 
-    public CarrinhoAdapter(ArrayList<Produto> itens, OnItemClickListener listener) {
-        this.itens = itens;
+    public CarrinhoAdapter(ArrayList<Produto> lista, OnItemRemovidoListener listener) {
+        this.lista = lista;
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public CarrinhoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CarrinhoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_carrinho, parent, false);
-        return new CarrinhoViewHolder(view);
+                .inflate(R.layout.item_carrinho, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CarrinhoViewHolder holder, int position) {
-        Produto produto = itens.get(position);
-        holder.textProduto.setText(String.format(Locale.getDefault(),
-                "%s x%d - %s",
-                produto.getNome(),
-                produto.getQuantidade(),
-                formatarMoeda(produto.getPreco() * produto.getQuantidade())));
+    public void onBindViewHolder(@NonNull CarrinhoAdapter.ViewHolder holder, int position) {
+        Produto produto = lista.get(position);
+        holder.textView.setText(produto.getNome() + " x" + produto.getQuantidade() + " = R$" + String.format("%.2f", produto.getSubtotal()));
 
-        holder.btnRemover.setOnClickListener(v -> listener.onItemClick(position));
+        holder.btnRemover.setOnClickListener(v -> {
+            lista.remove(holder.getAdapterPosition());
+            notifyItemRemoved(holder.getAdapterPosition());
+            notifyItemRangeChanged(holder.getAdapterPosition(), lista.size());
+
+            if (listener != null) {
+                listener.onItemRemovido();
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return itens.size();
+        return lista.size();
     }
 
-    private String formatarMoeda(double valor) {
-        return NumberFormat.getCurrencyInstance(new Locale("pt", "BR")).format(valor);
-    }
-
-    static class CarrinhoViewHolder extends RecyclerView.ViewHolder {
-        TextView textProduto;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textView;
         ImageButton btnRemover;
 
-        public CarrinhoViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textProduto = itemView.findViewById(R.id.textProdutoCarrinho);
-            btnRemover = itemView.findViewById(R.id.btnRemover);
+        public ViewHolder(View v) {
+            super(v);
+            textView = v.findViewById(R.id.textItemProduto);
+            btnRemover = v.findViewById(R.id.btnRemover);
         }
     }
 }

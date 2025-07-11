@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ScrollView ajustado -->
+    <!-- ScrollView -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- LinearLayout interno ajustado -->
+        <!-- LinearLayout -->
         <LinearLayout
             android:id="@+id/layoutConteudo"
             android:layout_width="match_parent"
@@ -84,13 +84,18 @@
                 android:gravity="center"
                 android:background="@color/white"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
-
+                <!-- Texto -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Seu carrinho está vazio."
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"/>
 
             </LinearLayout>
 
-            <!-- Restante do seu conteúdo... -->
             <TextView
                 android:id="@+id/textProduto"
                 android:layout_width="266dp"
